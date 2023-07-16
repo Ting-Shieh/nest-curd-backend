@@ -7,7 +7,7 @@ import * as Joi from 'joi';
 // import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 import { LogsModule } from './logs/logs.module';
-import ormconfig from 'ormconfig';
+import { connectionParams } from '../ormconfig';
 
 const envFilePath = [`.env.${process.env.NODE_ENV || `development`}`, '.env'];
 
@@ -22,8 +22,8 @@ const schema = Joi.object({
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
   DB_SYNC: Joi.boolean().default(false),
-  // LOG_ON: Joi.boolean(),
-  // LOG_LEVEL: Joi.string(),
+  LOG_ON: Joi.boolean(),
+  LOG_LEVEL: Joi.string(),
 });
 
 @Global()
@@ -35,7 +35,7 @@ const schema = Joi.object({
       load: [() => dotenv.config({ path: '.env' })],
       validationSchema: schema,
     }),
-    TypeOrmModule.forRootAsync(ormconfig),
+    TypeOrmModule.forRoot(connectionParams),
     // looger 'pino'
     // LoggerModule.forRoot({
     //   // npm i pino-pretty 中間件

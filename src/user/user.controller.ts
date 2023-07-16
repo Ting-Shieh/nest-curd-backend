@@ -7,8 +7,8 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from 'src/entities/entities/User';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { User } from './user.entity';
 // import { Logger } from 'nestjs-pino';
 
 @Controller('user')
