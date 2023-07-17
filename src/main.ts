@@ -3,7 +3,11 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { createLogger } from 'winston';
 import * as winston from 'winston';
-import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule, utilities } from 'nest-winston';
+import {
+  WINSTON_MODULE_NEST_PROVIDER,
+  WinstonModule,
+  utilities,
+} from 'nest-winston';
 import 'winston-daily-rotate-file';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AllExceptionFilter } from './filters/all-exception.filte';

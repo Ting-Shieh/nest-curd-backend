@@ -32,7 +32,7 @@ const schema = Joi.object({
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath,
-      load: [() => dotenv.config({ path: '.env' })],
+      // load: [() => dotenv.config({ path: '.env' })],
       validationSchema: schema,
     }),
     TypeOrmModule.forRoot(connectionParams),

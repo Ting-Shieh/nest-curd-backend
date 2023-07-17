@@ -28,7 +28,8 @@ export function buildConnectionOptions() {
   const entitiesDir =
     process.env.NODE_ENV === 'test'
       ? [__dirname + '/**/*.entity.ts']
-      : [__dirname + '/**/*.entity{.js,.ts}'];
+      : [__dirname + '/**/*.entity.{js,ts}'];
+  console.log('>>', entitiesDir);
   return {
     type: config[ConfigEnum.DB_TYPE],
     host: config[ConfigEnum.DB_HOST],
@@ -40,7 +41,7 @@ export function buildConnectionOptions() {
     synchronize: true, // ConfigEnum.DB_SYNC, // 同步本地schema and 數據庫,初始化使用
     // logging: ['error'],
     // logging: process.env.NODE_ENV === 'development',
-    logging: false,
+    logging: logFlag && process.env.NODE_ENV === 'development',
   } as TypeOrmModuleOptions;
 }
 
