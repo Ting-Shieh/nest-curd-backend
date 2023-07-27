@@ -5,6 +5,11 @@ import {
   Post,
   Inject,
   LoggerService,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -24,23 +29,35 @@ export class UserController {
   ) {
     // 語法糖 this.userService = new UserService();
   }
+  @Get('/profile')
+  getUserProfile(@Query() query: any): any {
+    console.log('query:', query);
+    return this.userService.findProfile(1);
+  }
   @Get()
   getUsers(): any {
     return this.userService.findAll();
   }
+  @Get('/:id')
+  getUser(): any {
+    return 'hollow world';
+  }
   @Post()
-  addUser(): any {
-    const user = {
-      username: 'TestUser2',
-      password: '123456',
-    } as User;
+  addUser(@Body() dto: any): any {
+    console.log('dto:', dto);
+    const user = dto as User;
     return this.userService.create(user);
   }
-
-  @Get('/profile')
-  getUserProfile(): any {
-    return this.userService.findProfile(1);
+  @Patch('/:id')
+  updateUser(@Body() dto: any, @Param('id') id: number): any {
+    const user = dto as User;
+    return this.userService.update(id, user);
   }
+  @Delete('/:id')
+  removeUser(@Param('id') id: number): any {
+    return this.userService.remove(id);
+  }
+
   @Get('/logs')
   getUserLogs(): any {
     return this.userService.findUserLogs(1);

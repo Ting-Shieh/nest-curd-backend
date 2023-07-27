@@ -7,6 +7,7 @@ import * as Joi from 'joi';
 // import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 import { LogsModule } from './logs/logs.module';
+import { RolesModule } from './roles/roles.module';
 import { connectionParams } from '../ormconfig';
 
 const envFilePath = [`.env.${process.env.NODE_ENV || `development`}`, '.env'];
@@ -92,6 +93,7 @@ const schema = Joi.object({
     //   logging: ['error'],
     // }),
     UserModule,
+    RolesModule,
     LogsModule,
   ],
   controllers: [],

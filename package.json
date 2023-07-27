@@ -9,7 +9,7 @@
       "build": "cross-env NODE_ENV=production nest build",
       "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
       "start": "ts-node src/index.ts",
-      "start:dev": "cross-env NODE_ENV=development nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+      "start:dev": "cross-env NODE_ENV=development nest start --watch",
       "start:debug": "nest start --debug --watch",
       "start:prod": "cross-env NODE_ENV=production node dist/src/main",
       "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -19,7 +19,7 @@
       "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
       "test:e2e": "jest --config ./test/jest-e2e.json",
       "generate:models": "typeorm-model-generator -h 127.0.0.1 -p 3306 -d testdb -u root -x example -e mysql -o ./src/entities",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "typeorm": "typeorm-ts-node-commonjs -d ormconfig.ts"
    },
    "dependencies": {
       "@nestjs/common": "^9.0.0",

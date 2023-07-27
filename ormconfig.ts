@@ -29,7 +29,8 @@ export function buildConnectionOptions() {
     process.env.NODE_ENV === 'test'
       ? [__dirname + '/**/*.entity.ts']
       : [__dirname + '/**/*.entity.{js,ts}'];
-  console.log('>>', entitiesDir);
+  console.log('__dirname>>', __dirname);
+  console.log('entitiesDir>>', entitiesDir);
   return {
     type: config[ConfigEnum.DB_TYPE],
     host: config[ConfigEnum.DB_HOST],
