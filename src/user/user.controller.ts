@@ -14,7 +14,9 @@ import {
 import { UserService } from './user.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { User } from './user.entity';
+import { getUserDto } from './dto/get-user.dto';
 // import { Logger } from 'nestjs-pino';
+
 
 @Controller('user')
 export class UserController {
@@ -35,8 +37,9 @@ export class UserController {
     return this.userService.findProfile(1);
   }
   @Get()
-  getUsers(): any {
-    return this.userService.findAll();
+  getUsers(@Query() query: getUserDto): any {
+    console.log('getUserDto query:', query);
+    return this.userService.findAll(query);
   }
   @Get('/:id')
   getUser(): any {
