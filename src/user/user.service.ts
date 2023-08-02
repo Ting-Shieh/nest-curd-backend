@@ -24,33 +24,54 @@ export class UserService {
     const { limit, page, username, gender, role } = query;
     const take = limit || 10;
     const skip = ((page || 1) - 1) * take;
-    return this.repositoryUser.find({
-      select: {
-        id: true,
-        username: true,
-        profile: {
-          gender: true,
-        },
-        roles: {
-          name: true,
-        },
-      },
-      relations: {
-        profile: true,
-        roles: true,
-      },
-      where: {
-        username,
-        profile: {
-          gender,
-        },
-        roles: {
-          id: role,
-        },
-      },
-      take,
-      skip,
-    });
+    // return this.repositoryUser.find({
+    //   select: {
+    //     id: true,
+    //     username: true,
+    //     profile: {
+    //       gender: true,
+    //     },
+    //     roles: {
+    //       name: true,
+    //     },
+    //   },
+    //   relations: {
+    //     profile: true,
+    //     roles: true,
+    //   },
+    //   where: {
+    //     username,
+    //     profile: {
+    //       gender,
+    //     },
+    //     roles: {
+    //       id: role,
+    //     },
+    //   },
+    //   take,
+    //   skip,
+    // });
+    // method 2
+    const queryBuilder = this.repositoryUser
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.roles', 'roles');
+    if (username) {
+      queryBuilder.where('user.username=:username', { username });
+    } else {
+      queryBuilder.where('user.username is NOT NULL');
+    }
+    if (gender) {
+      queryBuilder.andWhere('profile.gender=:gender', { gender });
+    } else {
+      queryBuilder.andWhere('profile.gender is NOT NULL');
+    }
+    if (role) {
+      queryBuilder.andWhere('roles.id=:role', { role });
+    } else {
+      queryBuilder.andWhere('roles.id is NOT NULL');
+    }
+    return queryBuilder.getMany();
   }
   find(username: string) {
     return this.repositoryUser.findOne({ where: { username } });
