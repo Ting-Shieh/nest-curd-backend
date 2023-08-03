@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { Logs } from 'src/logs/logs.entity';
 import { getUserDto } from './dto/get-user.dto';
 import { conditionUtils } from 'src/utils/db.helper';
+import { toUnicode } from 'punycode';
 
 @Injectable()
 export class UserService {
@@ -92,8 +93,13 @@ export class UserService {
     //   }
     // }
   }
-  update(id: number, user: Partial<User>) {
-    return this.repositoryUser.update(id, user);
+  async updateUser(id: number, user: Partial<User>) {
+    const dbUser = await this.findProfile(id);
+    const newUser = this.repositoryUser.merge(dbUser, user);
+    // 聯合模型更新需要使用 save() 或 queryBuilder()
+    return this.repositoryUser.save(newUser);
+    // 此法只適合單模型的更新，不適合有關聯的模型更新
+    // return this.repositoryUser.update(id, user);
   }
   async remove(id: number) {
     const user = await this.repositoryUser.findOne({ where: { id } });

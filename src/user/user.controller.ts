@@ -11,6 +11,9 @@ import {
   Delete,
   Query,
   UseFilters,
+  Headers,
+  HttpException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -54,9 +57,22 @@ export class UserController {
     return this.userService.create(user);
   }
   @Patch('/:id')
-  updateUser(@Body() dto: any, @Param('id') id: number): any {
-    const user = dto as User;
-    return this.userService.update(id, user);
+  updateUser(
+    @Body() dto: any,
+    @Param('id') id: number,
+    @Headers('Authorization') headers: any,
+  ): any {
+    /** TODO */
+    console.log('headers: ', headers);
+    if (id === headers) {
+      // 權限1：判斷用戶是否為自己
+      // 權限2：判斷用戶是否有更新User的權限
+      // 返回數據：不能包含敏感的password等訊息
+      const user = dto as User;
+      return this.userService.updateUser(id, user);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
   @Delete('/:id')
   removeUser(@Param('id') id: number): any {
