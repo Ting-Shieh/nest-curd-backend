@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Logs } from 'src/logs/logs.entity';
 import { getUserDto } from './dto/get-user.dto';
+import { conditionUtils } from 'src/utils/db.helper';
 
 @Injectable()
 export class UserService {
@@ -52,26 +53,27 @@ export class UserService {
     //   skip,
     // });
     // method 2
+    const obj = {
+      'user.username': username,
+      'profile.gender': gender,
+      'roles.id': role,
+    };
     const queryBuilder = this.repositoryUser
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('user.roles', 'roles');
-    if (username) {
-      queryBuilder.where('user.username=:username', { username });
-    } else {
-      queryBuilder.where('user.username is NOT NULL');
-    }
-    if (gender) {
-      queryBuilder.andWhere('profile.gender=:gender', { gender });
-    } else {
-      queryBuilder.andWhere('profile.gender is NOT NULL');
-    }
-    if (role) {
-      queryBuilder.andWhere('roles.id=:role', { role });
-    } else {
-      queryBuilder.andWhere('roles.id is NOT NULL');
-    }
-    return queryBuilder.getMany();
+    const newQueryBuilder = conditionUtils<User>(queryBuilder, obj);
+    // if (gender) {
+    //   queryBuilder.andWhere('profile.gender=:gender', { gender });
+    // } else {
+    //   queryBuilder.andWhere('profile.gender is NOT NULL');
+    // }
+    // if (role) {
+    //   queryBuilder.andWhere('roles.id=:role', { role });
+    // } else {
+    //   queryBuilder.andWhere('roles.id is NOT NULL');
+    // }
+    return newQueryBuilder.take(take).skip(skip).getMany();
   }
   find(username: string) {
     return this.repositoryUser.findOne({ where: { username } });
