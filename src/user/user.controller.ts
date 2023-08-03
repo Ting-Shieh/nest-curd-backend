@@ -10,15 +10,17 @@ import {
   Param,
   Delete,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { User } from './user.entity';
 import { getUserDto } from './dto/get-user.dto';
+import { TypeormFilter } from 'src/filters/typeorm.filter';
 // import { Logger } from 'nestjs-pino';
 
-
 @Controller('user')
+@UseFilters(new TypeormFilter())
 export class UserController {
   // // Method 1
   // private logger = new Logger(UserController.name);

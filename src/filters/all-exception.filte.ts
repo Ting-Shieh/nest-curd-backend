@@ -27,19 +27,19 @@ export class AllExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     const response = ctx.getResponse();
-    // 
+
     const httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
     //  加入更多邏輯錯誤異常處理
     let msg: string = exception['response'] || 'Internal Server Erroor';
-    if (exception instanceof QueryFailedError) {
-      msg = exception.message;
-      if (exception.driverError.errno === 1062) {
-        msg = '唯一索引（名字）衝突';
-      }
-    }
+    // if (exception instanceof QueryFailedError) {
+    //   msg = exception.message;
+    //   if (exception.driverError.errno === 1062) {
+    //     msg = '唯一索引（名字）衝突';
+    //   }
+    // }
     const responseBody = {
       headers: request.headers,
       query: request.query,
