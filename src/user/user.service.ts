@@ -81,7 +81,11 @@ export class UserService {
   find(username: string) {
     return this.repositoryUser.findOne({ where: { username } });
   }
-  async create(user: User) {
+  async create(user: Partial<User>) {
+    if (!user.roles) {
+      const dbRole = await this.rolesRepository.findOne({ where: { id: 2 } });
+      user.roles = [dbRole];
+    }
     if (user.roles instanceof Array && typeof user.roles[0] === 'number') {
       // {id, name} -> { id } -> [id]
       // 查询所有的用户角色

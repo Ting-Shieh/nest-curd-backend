@@ -11,7 +11,8 @@ export class AuthService {
     return dbUser;
   }
 
-  signup(username: string, password: string) {
-    return `from service signup => username: ${username}, password: ${password}`;
+  async signup(username: string, password: string) {
+    const res = await this.userService.create({ username, password });
+    return res;
   }
 }
