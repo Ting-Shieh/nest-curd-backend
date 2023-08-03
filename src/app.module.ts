@@ -9,6 +9,7 @@ import { join } from 'path';
 import { LogsModule } from './logs/logs.module';
 import { RolesModule } from './roles/roles.module';
 import { connectionParams } from '../ormconfig';
+import { AuthModule } from './auth/auth.module';
 
 const envFilePath = [`.env.${process.env.NODE_ENV || `development`}`, '.env'];
 
@@ -95,6 +96,7 @@ const schema = Joi.object({
     UserModule,
     RolesModule,
     LogsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [Logger],
