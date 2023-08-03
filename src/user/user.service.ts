@@ -1,17 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Logs } from 'src/logs/logs.entity';
 import { getUserDto } from './dto/get-user.dto';
 import { conditionUtils } from 'src/utils/db.helper';
-import { toUnicode } from 'punycode';
+import { Roles } from 'src/roles/roles.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly repositoryUser: Repository<User>,
     @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>,
+    @InjectRepository(Roles)
+    private readonly rolesRepository: Repository<Roles>,
   ) {}
 
   // async getUsers() {
@@ -80,6 +82,15 @@ export class UserService {
     return this.repositoryUser.findOne({ where: { username } });
   }
   async create(user: User) {
+    if (user.roles instanceof Array && typeof user.roles[0] === 'number') {
+      // {id, name} -> { id } -> [id]
+      // 查询所有的用户角色
+      user.roles = await this.rolesRepository.find({
+        where: {
+          id: In(user.roles),
+        },
+      });
+    }
     const userItem = await this.repositoryUser.create(user);
     const res = await this.repositoryUser.save(userItem);
     return res;

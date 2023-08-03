@@ -23,7 +23,7 @@ export class Profile {
   @Column()
   address: string;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
   // @JoinColumn({ name: 'user_id' })
   @JoinColumn()
   user: User;
