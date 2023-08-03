@@ -13,6 +13,7 @@ import {
   LoggerService,
 } from '@nestjs/common';
 import * as requestIp from 'request-ip';
+import { QueryFailedError } from 'typeorm';
 
 @Catch() // catch() 全抓
 export class AllExceptionFilter implements ExceptionFilter {
@@ -21,6 +22,7 @@ export class AllExceptionFilter implements ExceptionFilter {
     private readonly httpAdapterHost: HttpAdapterHost,
   ) {}
   catch(exception: unknown, host: ArgumentsHost) {
+    // console.log('exception:', exception);
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
@@ -30,6 +32,14 @@ export class AllExceptionFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+    //  加入更多邏輯錯誤異常處理
+    let msg: string = exception['response'] || 'Internal Server Erroor';
+    if (exception instanceof QueryFailedError) {
+      msg = exception.message;
+      if (exception.driverError.errno === 1062) {
+        msg = '唯一索引（名字）衝突';
+      }
+    }
     const responseBody = {
       headers: request.headers,
       query: request.query,
@@ -38,7 +48,7 @@ export class AllExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       ip: requestIp.getClientIp(request),
       exception: exception['name'],
-      error: exception['response'] || 'Internal Server Eoor'
+      error: msg,
     };
     //
     this.logger.error('[test]', responseBody);

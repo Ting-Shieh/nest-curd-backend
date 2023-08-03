@@ -80,15 +80,17 @@ export class UserService {
   }
   async create(user: User) {
     const userItem = await this.repositoryUser.create(user);
-    try {
-      const res = await this.repositoryUser.save(userItem);
-      return res;
-    } catch (error) {
-      console.log('error:', error);
-      if (error?.errno && error.errno === 1062) {
-        throw new HttpException(error.sqlMessage, 500);
-      }
-    }
+    const res = await this.repositoryUser.save(userItem);
+    return res;
+    // try {
+    //   const res = await this.repositoryUser.save(userItem);
+    //   return res;
+    // } catch (error) {
+    //   console.log('error:', error);
+    //   if (error?.errno && error.errno === 1062) {
+    //     throw new HttpException(error.sqlMessage, 500);
+    //   }
+    // }
   }
   update(id: number, user: Partial<User>) {
     return this.repositoryUser.update(id, user);
