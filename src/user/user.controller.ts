@@ -15,6 +15,7 @@ import {
   HttpException,
   UnauthorizedException,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -22,6 +23,7 @@ import { User } from './user.entity';
 import { getUserDto } from './dto/get-user.dto';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { CreateUserPipe } from './pipes/create-user.pipe';
+import { AuthGuard } from '@nestjs/passport';
 // import { Logger } from 'nestjs-pino';
 
 @Controller('user')
@@ -39,7 +41,13 @@ export class UserController {
     // 語法糖 this.userService = new UserService();
   }
   @Get('/profile')
-  getUserProfile(@Query('id', ParseIntPipe) id: any): any {
+  @UseGuards(AuthGuard('jwt'))
+  getUserProfile(
+    @Query('id', ParseIntPipe) id: any,
+    // 這裡req中的user是通過AuthGuard('jwt')中的validate方法返回的
+    // PassportModule來添加的
+    // @Req() req
+  ): any {
     return this.userService.findProfile(id);
   }
   @Get()

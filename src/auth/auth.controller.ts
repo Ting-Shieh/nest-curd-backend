@@ -15,9 +15,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/signin')
-  singin(@Body() dto: SigninUserDto) {
+  async singin(@Body() dto: SigninUserDto) {
     const { username, password } = dto;
-    return this.authService.signin(username, password);
+    // authService.signin 為異步方法
+    const token = await this.authService.signin(username, password);
+    return {
+      accessToken: token,
+    };
   }
 
   @Post('/signup')
