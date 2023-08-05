@@ -25,11 +25,13 @@ import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { CreateUserPipe } from './pipes/create-user.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from 'src/guards/admin/admin.guard';
+import { JwtGuard } from 'src/guards/jwt/jwt.guard';
 // import { Logger } from 'nestjs-pino';
 
 @Controller('user')
 @UseFilters(new TypeormFilter())
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt')) // JwtGuard 已繼承 AuthGuard
+@UseGuards(JwtGuard)
 export class UserController {
   // // Method 1
   // private logger = new Logger(UserController.name);
@@ -60,7 +62,8 @@ export class UserController {
   // @UseGuards(AdminGuard) // -> 順序 2
   // @UseGuards(AuthGuard('jwt')) // -> 順序 1
   // 2. 如果使用UseGuard傳遞多個守衛，則從前往後執行，如果前面的Guard没有通過，則後面的Guard不會執行
-  @UseGuards(AuthGuard('jwt'), AdminGuard)
+  // @UseGuards(AuthGuard('jwt'), AdminGuard)
+  @UseGuards(AdminGuard)
   getUsers(@Query() query: getUserDto): any {
     // console.log('getUserDto query:', query);
     return this.userService.findAll(query);

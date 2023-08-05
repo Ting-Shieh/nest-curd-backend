@@ -11,7 +11,7 @@ export class AdminGuard implements CanActivate {
     // console.log('req:', req);
     // 2.獲取請求中的用戶訊息進行邏輯判斷 -> 角色判斷
     const user = (await this.userService.find(req.user.username)) as User;
-    // console.log('user:', user);
+    console.log('user:', user);
     // id = 2 普通用戶 user
     return user.roles.filter((o) => o.id === 2).length ? true : false;
   }
