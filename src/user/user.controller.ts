@@ -24,10 +24,12 @@ import { getUserDto } from './dto/get-user.dto';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { CreateUserPipe } from './pipes/create-user.pipe';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/guards/admin/admin.guard';
 // import { Logger } from 'nestjs-pino';
 
 @Controller('user')
 @UseFilters(new TypeormFilter())
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   // // Method 1
   // private logger = new Logger(UserController.name);
@@ -40,8 +42,9 @@ export class UserController {
   ) {
     // 語法糖 this.userService = new UserService();
   }
+
   @Get('/profile')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   getUserProfile(
     @Query('id', ParseIntPipe) id: any,
     // 這裡req中的user是通過AuthGuard('jwt')中的validate方法返回的
@@ -50,7 +53,14 @@ export class UserController {
   ): any {
     return this.userService.findProfile(id);
   }
+
   @Get()
+  // 非常重要的知識點
+  // 1. 裝飾器的執行順序，方法的裝飾器如果有多個，是從下往上執行
+  // @UseGuards(AdminGuard) // -> 順序 2
+  // @UseGuards(AuthGuard('jwt')) // -> 順序 1
+  // 2. 如果使用UseGuard傳遞多個守衛，則從前往後執行，如果前面的Guard没有通過，則後面的Guard不會執行
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   getUsers(@Query() query: getUserDto): any {
     // console.log('getUserDto query:', query);
     return this.userService.findAll(query);

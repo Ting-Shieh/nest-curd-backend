@@ -79,7 +79,10 @@ export class UserService {
     return newQueryBuilder.take(take).skip(skip).getMany();
   }
   find(username: string) {
-    return this.repositoryUser.findOne({ where: { username } });
+    return this.repositoryUser.findOne({
+      where: { username },
+      relations: ['roles'],
+    });
   }
   async create(user: Partial<User>) {
     if (!user.roles) {
