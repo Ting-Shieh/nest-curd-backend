@@ -6,6 +6,7 @@ import { Logs } from 'src/logs/logs.entity';
 import { getUserDto } from './dto/get-user.dto';
 import { conditionUtils } from 'src/utils/db.helper';
 import { Roles } from 'src/roles/roles.entity';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -99,6 +100,8 @@ export class UserService {
       });
     }
     const userItem = await this.repositoryUser.create(user);
+    // 使用argon2加密password
+    userItem.password = await argon2.hash(userItem.password);
     const res = await this.repositoryUser.save(userItem);
     return res;
     // try {
