@@ -4,10 +4,12 @@ import {
   HttpException,
   Post,
   UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { SigninUserDto } from './dto/signin-user.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize/serialize.interceptor';
 
 @Controller('auth')
 @UseFilters(new TypeormFilter())
@@ -25,6 +27,7 @@ export class AuthController {
   }
 
   @Post('/signup')
+  @UseInterceptors(SerializeInterceptor)
   signup(@Body() dto: SigninUserDto) {
     const { username, password } = dto;
     // if (!username || !password) {

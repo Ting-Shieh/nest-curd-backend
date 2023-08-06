@@ -91,6 +91,13 @@ async function bootstrap() {
       // whitelist: true, // 去除在類上不存在的字段
     }),
   );
+
+  // // 全局 Guards -> 弊端：無法使用DI -> 無法訪問 userService
+  // app.useGlobalGuards();
+
+  // // 全局 Interceptors
+  // app.useGlobalInterceptors(new SerializeInterceptor());
+
   const port = 3000;
   await app.listen(port);
 }
