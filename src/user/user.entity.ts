@@ -17,16 +17,21 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Profile } from './profile.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
+
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column({
     unique: true,
   })
   username: string;
+
   @Column()
+  @Exclude()
   password: string;
 
   @OneToMany(() => Logs, (logs) => logs.user, { cascade: true })
