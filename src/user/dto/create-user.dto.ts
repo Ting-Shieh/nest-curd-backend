@@ -1,10 +1,5 @@
-// Copyright (c) 2023 Ting<zsting29@gmail.com>
-// 
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
 import { IsNotEmpty, IsString, Length } from 'class-validator';
-import { Roles } from 'src/roles/roles.entity';
+import { Roles } from '../../roles/roles.entity';
 
 export class CreateUserDto {
   @IsString()

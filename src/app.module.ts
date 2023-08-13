@@ -10,6 +10,7 @@ import { LogsModule } from './logs/logs.module';
 import { RolesModule } from './roles/roles.module';
 import { connectionParams } from '../ormconfig';
 import { AuthModule } from './auth/auth.module';
+import { MenusModule } from './menus/menus.module';
 
 const envFilePath = [`.env.${process.env.NODE_ENV || `development`}`, '.env'];
 
@@ -97,6 +98,7 @@ const schema = Joi.object({
     RolesModule,
     LogsModule,
     AuthModule,
+    MenusModule,
   ],
   controllers: [],
   providers: [Logger],

@@ -1,13 +1,12 @@
-// Copyright (c) 2023 Ting<zsting29@gmail.com>
-// 
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
 import { Module } from '@nestjs/common';
+import { RolesService } from './roles.service';
+import { RolesController } from './roles.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Roles } from './roles.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Roles])],
+  controllers: [RolesController],
+  providers: [RolesService],
 })
 export class RolesModule {}
