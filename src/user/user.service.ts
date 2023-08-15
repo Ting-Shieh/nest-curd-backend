@@ -82,7 +82,7 @@ export class UserService {
   find(username: string) {
     return this.repositoryUser.findOne({
       where: { username },
-      relations: ['roles'],
+      relations: ['roles', 'roles.menus'],
     });
   }
   async create(user: Partial<User>) {

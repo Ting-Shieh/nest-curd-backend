@@ -28,5 +28,6 @@ import { CaslAbilityService } from './casl-ability.service';
   ], // 其他模塊export後，import該模塊
   providers: [AuthService, JwtStrategy, CaslAbilityService],
   controllers: [AuthController],
+  exports: [CaslAbilityService],
 })
 export class AuthModule {}
