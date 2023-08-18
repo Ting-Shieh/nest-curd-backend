@@ -2,9 +2,9 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
-import { Logs } from 'src/logs/logs.entity';
+import { Logs } from '../logs/logs.entity';
 import { getUserDto } from './dto/get-user.dto';
-import { conditionUtils } from 'src/utils/db.helper';
+import { conditionUtils } from '../utils/db.helper';
 import { Roles } from '../roles/roles.entity';
 import * as argon2 from 'argon2';
 

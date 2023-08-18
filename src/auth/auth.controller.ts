@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
+import { TypeormFilter } from '../filters/typeorm.filter';
 import { SigninUserDto } from './dto/signin-user.dto';
 // import { SerializeInterceptor } from 'src/interceptors/serialize/serialize.interceptor';
 
@@ -19,7 +19,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/signin')
-  async singin(@Body() dto: SigninUserDto) {
+  async signin(@Body() dto: SigninUserDto) {
     const { username, password } = dto;
     // authService.signin 為異步方法
     const token = await this.authService.signin(username, password);
