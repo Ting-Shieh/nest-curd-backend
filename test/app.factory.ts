@@ -39,7 +39,7 @@ export class AppFactory {
     this.connection = datasource;
     // 測試的基礎的字典資料寫入到資料庫中
     // Method1: this.connection.runMigrations()
-    // Method2: 寫入SQL語句
+    // Method2: 寫入SQL語句 (V)
     const queryRunner = this.connection.createQueryRunner();
 
     const sql =
