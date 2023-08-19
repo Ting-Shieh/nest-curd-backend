@@ -78,7 +78,10 @@ declare const module: any;
 //   // }
 // }
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {});
+  const app = await NestFactory.create(AppModule, {
+    logger: false,
+    cors: true,
+  });
   setupApp(app);
   // replace the Nest logger
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
