@@ -3,18 +3,26 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { setupApp } from '../src/setup';
+import { AppFactory } from './app.factory';
 
 describe('AppController (e2e)', () => {
+  let appFactory: AppFactory;
   let app: INestApplication;
-
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    // const moduleFixture: TestingModule = await Test.createTestingModule({
+    //   imports: [AppModule],
+    // }).compile();
 
-    app = moduleFixture.createNestApplication();
-    setupApp(app);
-    await app.init();
+    // app = moduleFixture.createNestApplication();
+    // setupApp(app);
+    // await app.init();
+    appFactory = await AppFactory.init();
+    await appFactory.initDB();
+    app = appFactory.instance;
+  });
+
+  afterEach(async () => {
+    await appFactory.cleanup();
   });
 
   it('/ (GET)', () => {
