@@ -17,6 +17,14 @@ export function getEnv(env: string) {
   return {};
 }
 
+// 給e2e用
+export function getServerConfig() {
+  const defaultConfig = getEnv('.env');
+  const envConfig = getEnv(`.env.${process.env.NODE_ENV || 'development'}`);
+  // configService
+  const config = { ...defaultConfig, ...envConfig };
+  return config;
+}
 // 通过dotENV来解析不同的配置
 export function buildConnectionOptions() {
   const defaultConfig = getEnv('.env');

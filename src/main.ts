@@ -11,6 +11,7 @@ import {
 import 'winston-daily-rotate-file';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AllExceptionFilter } from './filters/all-exception.filte';
+import { setupApp } from './setup';
 declare const module: any;
 
 // async function bootstrap() {
@@ -78,6 +79,7 @@ declare const module: any;
 // }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});
+  setupApp(app);
   // replace the Nest logger
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   app.setGlobalPrefix('api/v1');
