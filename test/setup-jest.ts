@@ -10,7 +10,9 @@ global.beforeEach(async () => {
   await appFactory?.destory();
   await appFactory.initDB();
   app = appFactory.instance;
-  global.app = app; // 全局掛載
+  // global.app = app; // 全局掛載
+  pactum.request.setBaseUrl(await app.getUrl());
+  global.pactum = pactum;
 });
 
 global.afterEach(async () => {
